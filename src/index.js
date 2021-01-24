@@ -3,6 +3,13 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import WebFont from "webfontloader";
+import { Container } from "./elements/Container";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
+import EditExpense from "./components/EditExpense";
+import ExpensesCategory from "./components/ExpensesCategory";
+import ExpensesList from "./components/ExpensesList";
+import Login from "./components/Login";
+import SignUp from "./components/SignUp";
 
 WebFont.load({
   google: {
@@ -12,7 +19,20 @@ WebFont.load({
 });
 
 const Index = () => {
-  return <App />;
+  return (
+    <BrowserRouter>
+      <Container>
+        <Switch>
+          <Route path="/iniciar-sesion" component={Login} />
+          <Route path="/crear-cuenta" component={SignUp} />
+          <Route path="/categorias" component={ExpensesCategory} />
+          <Route path="/lista" component={ExpensesList} />
+          <Route path="/editar/:id" component={EditExpense} />
+          <Route path="/" component={App} />
+        </Switch>
+      </Container>
+    </BrowserRouter>
+  );
 };
 
 ReactDOM.render(<Index />, document.getElementById("root"));
