@@ -7,11 +7,14 @@ import { Form, Input, BotonContainer } from "../elements/FormElements";
 import { ReactComponent as SvgLogin } from "../img/registro.svg";
 import styled from "styled-components";
 import { auth } from "../firebase/firebaseConfig";
+import Alert from "../elements/Alert";
 
 const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [password2, setPassword2] = useState("");
+  const [alertState, setAlertState] = useState(false);
+  const [alert, setAlert] = useState({});
 
   const history = useHistory();
 
@@ -33,19 +36,33 @@ const SignUp = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setAlertState(false);
+    setAlert({});
 
     // We check on the client side if the email is valid.
     const regularExpression = /[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+/;
     if (!regularExpression.test(email)) {
-      console.log("Introduzca un correo valido");
+      setAlertState(true);
+      setAlert({
+        type: "error",
+        message: "Por favor ingrese un correo válido",
+      });
       return;
     }
     if (email === "" || password === "" || password2 === "") {
-      console.log("Por favor llene todos los datos");
+      setAlertState(true);
+      setAlert({
+        type: "error",
+        message: "Por favor llene todos los datos",
+      });
       return;
     }
     if (password !== password2) {
-      console.log("Las contraseñas no son iguales");
+      setAlertState(true);
+      setAlert({
+        type: "error",
+        message: "Las contraseñas no son iguales",
+      });
       return;
     }
 
@@ -53,6 +70,8 @@ const SignUp = () => {
       await auth.createUserWithEmailAndPassword(email, password);
       history.push("/");
     } catch (e) {
+      setAlertState(true);
+
       let message;
       switch (e.code) {
         case "auth/invalid-password":
@@ -69,7 +88,7 @@ const SignUp = () => {
           message = "Hubo un error al intentar crear la cuenta.";
           break;
       }
-      console.log(message);
+      setAlert({ type: "error", message: message });
     }
   };
 
@@ -117,6 +136,12 @@ const SignUp = () => {
           </Boton>
         </BotonContainer>
       </Form>
+      <Alert
+        type={alert.type}
+        message={alert.message}
+        alertState={alertState}
+        setAlertState={setAlertState}
+      />
     </>
   );
 };
