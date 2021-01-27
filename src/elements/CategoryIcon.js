@@ -17,7 +17,7 @@ const CategoryIcon = ({ id }) => {
       return <IconoCompras />;
     case "cuentas y pagos":
       return <IconoCuentasYPagos />;
-    case "entretenimiento":
+    case "diversion":
       return <IconoDiversion />;
     case "hogar":
       return <IconoHogar />;
@@ -28,7 +28,7 @@ const CategoryIcon = ({ id }) => {
     case "transporte":
       return <IconoTransporte />;
     default:
-      break;
+      return null;
   }
 };
 

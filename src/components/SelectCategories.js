@@ -34,8 +34,7 @@ const SelectCategories = ({ category, setCategory }) => {
               data-value={category.id}
               onClick={handleClick}
             >
-              {/* <CategoryIcon id={category.id} /> */}
-              {console.log(category.id)}
+              <CategoryIcon id={category.id} />
               {category.text}
             </Option>
           ))}
