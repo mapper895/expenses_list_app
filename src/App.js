@@ -8,6 +8,7 @@ import {
 } from "./elements/Header";
 import { Boton } from "./elements/Boton";
 import LogOutBoton from "./elements/LogOutBoton";
+import ExpenseForm from "./components/ExpenseForm";
 
 const App = () => {
   return (
@@ -26,6 +27,8 @@ const App = () => {
           </BotonContainer>
         </HeaderContainer>
       </Header>
+
+      <ExpenseForm />
     </>
   );
 };
