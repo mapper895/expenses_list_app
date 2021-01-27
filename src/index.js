@@ -14,6 +14,7 @@ import { Helmet } from "react-helmet";
 import favicon from "./img/logo.png";
 import Background from "./elements/Background";
 import { AuthProvider } from "./contexts/AuthContext";
+import PrivateRoute from "./components/PrivateRoute";
 
 WebFont.load({
   google: {
@@ -35,10 +36,18 @@ const Index = () => {
             <Switch>
               <Route path="/iniciar-sesion" component={Login} />
               <Route path="/crear-cuenta" component={SignUp} />
-              <Route path="/categorias" component={ExpensesCategory} />
-              <Route path="/lista" component={ExpensesList} />
-              <Route path="/editar/:id" component={EditExpense} />
-              <Route path="/" component={App} />
+              <PrivateRoute path="/categorias">
+                <ExpensesCategory />
+              </PrivateRoute>
+              <PrivateRoute path="/lista">
+                <ExpensesList />
+              </PrivateRoute>
+              <PrivateRoute path="/editar/:id">
+                <EditExpense />
+              </PrivateRoute>
+              <PrivateRoute path="/">
+                <App />
+              </PrivateRoute>
             </Switch>
           </Container>
         </BrowserRouter>
