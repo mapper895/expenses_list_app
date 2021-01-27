@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { theme } from "../theme";
+import CategoryIcon from "../elements/CategoryIcon";
 import { ReactComponent as DownIcon } from "../img/down.svg";
 
 const SelectCategories = ({ category, setCategory }) => {
@@ -33,6 +34,8 @@ const SelectCategories = ({ category, setCategory }) => {
               data-value={category.id}
               onClick={handleClick}
             >
+              {/* <CategoryIcon id={category.id} /> */}
+              {console.log(category.id)}
               {category.text}
             </Option>
           ))}
