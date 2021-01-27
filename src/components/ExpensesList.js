@@ -2,8 +2,11 @@ import React from "react";
 import { Header, Title } from "../elements/Header";
 import { Helmet } from "react-helmet";
 import ReturnBtn from "../elements/ReturnBtn";
+import { useAuth } from "../contexts/AuthContext";
 
 const ExpensesList = () => {
+  const { user } = useAuth();
+
   return (
     <>
       <Helmet>
