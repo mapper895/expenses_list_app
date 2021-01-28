@@ -9,6 +9,7 @@ import {
 import { Boton } from "./elements/Boton";
 import LogOutBoton from "./elements/LogOutBoton";
 import ExpenseForm from "./components/ExpenseForm";
+import TotalExpensesBar from "./components/TotalExpensesBar";
 
 const App = () => {
   return (
@@ -29,6 +30,8 @@ const App = () => {
       </Header>
 
       <ExpenseForm />
+
+      <TotalExpensesBar />
     </>
   );
 };
