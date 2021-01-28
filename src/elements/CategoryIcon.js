@@ -1,32 +1,32 @@
 import React from "react";
 
-import { ReactComponent as IconoComida } from "../img/cat_comida.svg";
-import { ReactComponent as IconoCompras } from "../img/cat_compras.svg";
-import { ReactComponent as IconoCuentasYPagos } from "../img/cat_cuentas-y-pagos.svg";
-import { ReactComponent as IconoDiversion } from "../img/cat_diversion.svg";
-import { ReactComponent as IconoHogar } from "../img/cat_hogar.svg";
-import { ReactComponent as IconoRopa } from "../img/cat_ropa.svg";
-import { ReactComponent as IconoSaludEHigiene } from "../img/cat_salud-e-higiene.svg";
-import { ReactComponent as IconoTransporte } from "../img/cat_transporte.svg";
+import { ReactComponent as FoodIcon } from "../img/cat_comida.svg";
+import { ReactComponent as ShopIcon } from "../img/cat_compras.svg";
+import { ReactComponent as BillsIcon } from "../img/cat_cuentas-y-pagos.svg";
+import { ReactComponent as FunIcon } from "../img/cat_diversion.svg";
+import { ReactComponent as HomeIcon } from "../img/cat_hogar.svg";
+import { ReactComponent as ClothesIcon } from "../img/cat_ropa.svg";
+import { ReactComponent as HealthIcon } from "../img/cat_salud-e-higiene.svg";
+import { ReactComponent as TransportIcon } from "../img/cat_transporte.svg";
 
 const CategoryIcon = ({ id }) => {
   switch (id) {
     case "comida":
-      return <IconoComida />;
+      return <FoodIcon />;
     case "compras":
-      return <IconoCompras />;
+      return <ShopIcon />;
     case "cuentas y pagos":
-      return <IconoCuentasYPagos />;
+      return <BillsIcon />;
     case "diversion":
-      return <IconoDiversion />;
+      return <FunIcon />;
     case "hogar":
-      return <IconoHogar />;
+      return <HomeIcon />;
     case "ropa":
-      return <IconoRopa />;
+      return <ClothesIcon />;
     case "salud e higiene":
-      return <IconoSaludEHigiene />;
+      return <HealthIcon />;
     case "transporte":
-      return <IconoTransporte />;
+      return <TransportIcon />;
     default:
       return null;
   }
