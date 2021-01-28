@@ -14,12 +14,16 @@ import fromUnixTime from "date-fns/fromUnixTime";
 import getUnixTime from "date-fns/getUnixTime";
 import AddExpense from "../firebase/AddExpense";
 import { useAuth } from "../contexts/AuthContext";
+import Alert from "../elements/Alert";
 
 const ExpenseForm = () => {
   const [descriptionInput, setDescriptionInput] = useState("");
   const [quantityInput, setQuantityInput] = useState("");
   const [category, setCategory] = useState("hogar");
   const [date, setDate] = useState(new Date());
+  const [alertState, setAlertState] = useState(false);
+  const [alert, setAlert] = useState({});
+
   const { user } = useAuth();
 
   const handleChange = (e) => {
@@ -33,14 +37,52 @@ const ExpenseForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    // Transform the quantity into a number and 2 decimals
     let quantity = parseFloat(quantityInput).toFixed(2);
-    AddExpense({
-      category: category,
-      description: descriptionInput,
-      quantity: quantity,
-      date: getUnixTime(date),
-      uidUser: user.uid,
-    });
+
+    // Check if there´s description and value
+    if (descriptionInput !== "" && quantityInput !== "") {
+      if (quantity) {
+        AddExpense({
+          category: category,
+          description: descriptionInput,
+          quantity: quantity,
+          date: getUnixTime(date),
+          uidUser: user.uid,
+        })
+          .then(() => {
+            setCategory("hogar");
+            setDescriptionInput("");
+            setQuantityInput("");
+            setDate(new Date());
+
+            setAlertState(true);
+            setAlert({
+              type: "success",
+              message: "El gasto fue agregado correctamente",
+            });
+          })
+          .catch((error) => {
+            setAlertState(true);
+            setAlert({
+              type: "error",
+              message: "Hubo un problema al intentar agregar tu gasto",
+            });
+          });
+      } else {
+        setAlertState(true);
+        setAlert({
+          type: "error",
+          message: "El valor que ingresaste no es correcto",
+        });
+      }
+    } else {
+      setAlertState(true);
+      setAlert({
+        type: "error",
+        message: "Por favor rellena todos los campos",
+      });
+    }
   };
 
   return (
@@ -72,6 +114,12 @@ const ExpenseForm = () => {
           Agregar Gasto <PlusIcon />
         </Boton>
       </BotonContainer>
+      <Alert
+        type={alert.type}
+        message={alert.message}
+        alertState={alertState}
+        setAlertState={setAlertState}
+      />
     </Form>
   );
 };

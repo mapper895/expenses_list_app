@@ -1,7 +1,7 @@
 import { db } from "./firebaseConfig";
 
 const AddExpense = ({ category, description, quantity, date, uidUser }) => {
-  db.collection("gastos").add({
+  return db.collection("gastos").add({
     categoria: category,
     descripcion: description,
     cantidad: quantity,
