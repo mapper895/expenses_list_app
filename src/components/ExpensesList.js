@@ -28,7 +28,7 @@ import { format, fromUnixTime } from "date-fns";
 import { es } from "date-fns/locale";
 
 const ExpensesList = () => {
-  const [expenses] = useGetExpenses();
+  const [expenses, getMoreExpenses, moreToLoad] = useGetExpenses();
 
   const formatDate = (date) => {
     if (date) {
@@ -76,7 +76,9 @@ const ExpensesList = () => {
               </Category>
 
               <Description>{expense.descripcion}</Description>
-              <Value>{ConvertToCurrent(expense.cantidad)}</Value>
+              <Value>
+                {expense.cantidad ? ConvertToCurrent(expense.cantidad) : ""}
+              </Value>
 
               <BotonContainer>
                 <ActionBoton as={Link} to={`/editar/${expense.id}`}>
@@ -90,9 +92,13 @@ const ExpensesList = () => {
           </div>
         ))}
 
-        <CentralBotonContainer>
-          <LoadMoreBoton>Cargar más</LoadMoreBoton>
-        </CentralBotonContainer>
+        {moreToLoad && (
+          <CentralBotonContainer>
+            <LoadMoreBoton onClick={() => getMoreExpenses()}>
+              Cargar más
+            </LoadMoreBoton>
+          </CentralBotonContainer>
+        )}
 
         {expenses.length === 0 && (
           <SubtitleContainer>
