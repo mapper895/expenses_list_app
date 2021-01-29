@@ -1,7 +1,30 @@
 import React from "react";
+import { Header, Title } from "../elements/Header";
+import { Helmet } from "react-helmet";
+import ReturnBtn from "../elements/ReturnBtn";
+import TotalExpensesBar from "./TotalExpensesBar";
+import ExpenseForm from "./ExpenseForm";
+import { useParams } from "react-router-dom";
+import useGetExpense from "../hooks/useGetExpense";
 
 const EditExpense = () => {
-  return <h1>Editar Gasto</h1>;
+  const { id } = useParams();
+  const [expense] = useGetExpense(id);
+
+  return (
+    <>
+      <Helmet>
+        <title>Editar Gasto</title>
+      </Helmet>
+
+      <Header>
+        <ReturnBtn />
+        <Title>Editar Gasto</Title>
+      </Header>
+      <ExpenseForm />
+      <TotalExpensesBar />
+    </>
+  );
 };
 
 export default EditExpense;
