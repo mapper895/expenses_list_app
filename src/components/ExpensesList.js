@@ -2,11 +2,11 @@ import React from "react";
 import { Header, Title } from "../elements/Header";
 import { Helmet } from "react-helmet";
 import ReturnBtn from "../elements/ReturnBtn";
-import { useAuth } from "../contexts/AuthContext";
 import TotalExpensesBar from "./TotalExpensesBar";
+import useGetExpenses from "../hooks/useGetExpenses";
 
 const ExpensesList = () => {
-  const { user } = useAuth();
+  const { expenses } = useGetExpenses();
 
   return (
     <>
