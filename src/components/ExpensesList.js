@@ -26,6 +26,7 @@ import { ReactComponent as DeleteIcon } from "../img/borrar.svg";
 import { Boton } from "../elements/Boton";
 import { format, fromUnixTime } from "date-fns";
 import { es } from "date-fns/locale";
+import deleteExpense from "../firebase/deleteExpense";
 
 const ExpensesList = () => {
   const [expenses, getMoreExpenses, moreToLoad] = useGetExpenses();
@@ -84,7 +85,7 @@ const ExpensesList = () => {
                 <ActionBoton as={Link} to={`/editar/${expense.id}`}>
                   <EditIcon />
                 </ActionBoton>
-                <ActionBoton>
+                <ActionBoton onClick={() => deleteExpense(expense.id)}>
                   <DeleteIcon />
                 </ActionBoton>
               </BotonContainer>
