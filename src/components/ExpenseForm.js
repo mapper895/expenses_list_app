@@ -10,7 +10,6 @@ import { Boton } from "../elements/Boton";
 import { ReactComponent as PlusIcon } from "../img/plus.svg";
 import SelectCategories from "./SelectCategories";
 import DatePicker from "./DatePicker";
-import fromUnixTime from "date-fns/fromUnixTime";
 import getUnixTime from "date-fns/getUnixTime";
 import AddExpense from "../firebase/AddExpense";
 import { useAuth } from "../contexts/AuthContext";

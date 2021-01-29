@@ -8,8 +8,6 @@ import useGetExpenses from "../hooks/useGetExpenses";
 import {
   List,
   ListElement,
-  CategoryList,
-  CategoryListElements,
   Category,
   Description,
   Value,
@@ -26,9 +24,32 @@ import ConvertToCurrent from "../functions/ConvertToCurrency";
 import { ReactComponent as EditIcon } from "../img/editar.svg";
 import { ReactComponent as DeleteIcon } from "../img/borrar.svg";
 import { Boton } from "../elements/Boton";
+import { format, fromUnixTime } from "date-fns";
+import { es } from "date-fns/locale";
 
 const ExpensesList = () => {
   const [expenses] = useGetExpenses();
+
+  const formatDate = (date) => {
+    if (date) {
+      return format(fromUnixTime(date), "dd 'de' MMMM 'de' yyyy", {
+        locale: es,
+      });
+    }
+  };
+
+  const isEqualDate = (expenses, index, expense) => {
+    if (index !== 0) {
+      const actualDate = formatDate(expense.fecha);
+      const previousExpenseDate = formatDate(expenses[index - 1].fecha);
+
+      if (actualDate === previousExpenseDate) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  };
 
   return (
     <>
@@ -42,25 +63,31 @@ const ExpensesList = () => {
       </Header>
 
       <List>
-        {expenses.map((expense) => (
-          <ListElement key={expense.id}>
-            <Category>
-              <CategoryIcon id={expense.categoria} />
-              {expense.categoria}
-            </Category>
+        {expenses.map((expense, index) => (
+          <div key={index}>
+            {!isEqualDate(expenses, index, expense) && (
+              <Date>{formatDate(expense.fecha)}</Date>
+            )}
 
-            <Description>{expense.descripcion}</Description>
-            <Value>{ConvertToCurrent(expense.cantidad)}</Value>
+            <ListElement key={expense.id}>
+              <Category>
+                <CategoryIcon id={expense.categoria} />
+                {expense.categoria}
+              </Category>
 
-            <BotonContainer>
-              <ActionBoton as={Link} to={`/editar/${expense.id}`}>
-                <EditIcon />
-              </ActionBoton>
-              <ActionBoton>
-                <DeleteIcon />
-              </ActionBoton>
-            </BotonContainer>
-          </ListElement>
+              <Description>{expense.descripcion}</Description>
+              <Value>{ConvertToCurrent(expense.cantidad)}</Value>
+
+              <BotonContainer>
+                <ActionBoton as={Link} to={`/editar/${expense.id}`}>
+                  <EditIcon />
+                </ActionBoton>
+                <ActionBoton>
+                  <DeleteIcon />
+                </ActionBoton>
+              </BotonContainer>
+            </ListElement>
+          </div>
         ))}
 
         <CentralBotonContainer>
