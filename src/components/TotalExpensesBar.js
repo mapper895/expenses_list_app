@@ -2,12 +2,15 @@ import React from "react";
 import styled from "styled-components";
 import { theme } from "../theme";
 import ConvertToCurrency from "../functions/ConvertToCurrency";
+import { useTotalMonth } from "../contexts/TotalMonthSpentContext";
 
 const TotalExpensesBar = () => {
+  const { total } = useTotalMonth();
+
   return (
     <TotalBar>
       <p>Total gastado en el mes:</p>
-      <p>{ConvertToCurrency(0)}</p>
+      <p>{total ? ConvertToCurrency(total) : ConvertToCurrency(0)}</p>
     </TotalBar>
   );
 };
