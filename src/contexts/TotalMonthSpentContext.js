@@ -10,7 +10,6 @@ const TotalSpentProvider = ({ children }) => {
   const expenses = useGetMonthExpenses();
 
   useEffect(() => {
-    console.log(expenses);
     let accumulated = 0;
     expenses.forEach((expense) => {
       accumulated += expense.cantidad;
