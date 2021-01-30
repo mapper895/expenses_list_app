@@ -18,10 +18,10 @@ const EditExpense = () => {
       </Helmet>
 
       <Header>
-        <ReturnBtn />
+        <ReturnBtn rute="/lista" />
         <Title>Editar Gasto</Title>
       </Header>
-      <ExpenseForm />
+      <ExpenseForm expense={expense} />
       <TotalExpensesBar />
     </>
   );

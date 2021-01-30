@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
 import {
   FilterContainer,
   Form,
@@ -6,16 +8,17 @@ import {
   BigInput,
   BotonContainer,
 } from "../elements/FormElements";
+import Alert from "../elements/Alert";
 import { Boton } from "../elements/Boton";
 import { ReactComponent as PlusIcon } from "../img/plus.svg";
 import SelectCategories from "./SelectCategories";
 import DatePicker from "./DatePicker";
 import getUnixTime from "date-fns/getUnixTime";
+import fromUnixTime from "date-fns/fromUnixTime";
 import AddExpense from "../firebase/AddExpense";
-import { useAuth } from "../contexts/AuthContext";
-import Alert from "../elements/Alert";
+import editExpense from "../firebase/editExpense";
 
-const ExpenseForm = () => {
+const ExpenseForm = ({ expense }) => {
   const [descriptionInput, setDescriptionInput] = useState("");
   const [quantityInput, setQuantityInput] = useState("");
   const [category, setCategory] = useState("hogar");
@@ -23,7 +26,25 @@ const ExpenseForm = () => {
   const [alertState, setAlertState] = useState(false);
   const [alert, setAlert] = useState({});
 
+  const history = useHistory();
   const { user } = useAuth();
+
+  useEffect(() => {
+    // Check if there´s any expense
+    // Set all the State with the expense values
+    if (expense) {
+      // Check if the expense is the actual user´s
+      // We check the uid saved with the user uid´s
+      if (expense.data().uidUsuario === user.uid) {
+        setCategory(expense.data().categoria);
+        setDate(fromUnixTime(expense.data().fecha));
+        setDescriptionInput(expense.data().descripcion);
+        setQuantityInput(expense.data().cantidad);
+      } else {
+        history.push("/lista");
+      }
+    }
+  }, [expense, user, history]);
 
   const handleChange = (e) => {
     if (e.target.name === "description") {
@@ -42,32 +63,44 @@ const ExpenseForm = () => {
     // Check if there´s description and value
     if (descriptionInput !== "" && quantityInput !== "") {
       if (quantity) {
-        AddExpense({
-          category: category,
-          description: descriptionInput,
-          quantity: quantity,
-          date: getUnixTime(date),
-          uidUser: user.uid,
-        })
-          .then(() => {
-            setCategory("hogar");
-            setDescriptionInput("");
-            setQuantityInput("");
-            setDate(new Date());
-
-            setAlertState(true);
-            setAlert({
-              type: "success",
-              message: "El gasto fue agregado correctamente",
-            });
+        if (expense) {
+          editExpense({
+            id: expense.id,
+            category: category,
+            description: descriptionInput,
+            quantity: quantity,
+            date: getUnixTime(date),
           })
-          .catch((error) => {
-            setAlertState(true);
-            setAlert({
-              type: "error",
-              message: "Hubo un problema al intentar agregar tu gasto",
+            .then(() => history.push("/lista"))
+            .catch((error) => console.log(error));
+        } else {
+          AddExpense({
+            category: category,
+            description: descriptionInput,
+            quantity: quantity,
+            date: getUnixTime(date),
+            uidUser: user.uid,
+          })
+            .then(() => {
+              setCategory("hogar");
+              setDescriptionInput("");
+              setQuantityInput("");
+              setDate(new Date());
+
+              setAlertState(true);
+              setAlert({
+                type: "success",
+                message: "El gasto fue agregado correctamente",
+              });
+            })
+            .catch((error) => {
+              setAlertState(true);
+              setAlert({
+                type: "error",
+                message: "Hubo un problema al intentar agregar tu gasto",
+              });
             });
-          });
+        }
       } else {
         setAlertState(true);
         setAlert({
@@ -110,7 +143,8 @@ const ExpenseForm = () => {
       </div>
       <BotonContainer>
         <Boton as="button" primary withIcon type="submit">
-          Agregar Gasto <PlusIcon />
+          {expense ? "Editar gasto" : "Agregar gasto"}
+          <PlusIcon />
         </Boton>
       </BotonContainer>
       <Alert
